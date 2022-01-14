@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static  %}
+<html>
+   <head>
+    <title>test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   </head>
+   <body>
+      <form id="reg-form" method="POST">
+          {% csrf_token %}
+         <input id="username" type="text" name="username">
+         <input id="email" type="email" name="email">
+         <input id="password1" type="password" name="password1">
+         <input id="password2" type="password" name="password2">
+         <button type="submit" name="submit" >Create</button>
+      </form>
+<script>
+        const form = document.getElementById('reg-form');
+        form.addEventListener("submit", submitHandler);
+
+        function submitHandler(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'account:register' %}',
+                data: $('#reg-form').serialize(),
+                dataType: 'json',
+            });
+        }
+
+    </script>
+   </body>
+</html>

@@ -1,0 +1,104 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load is_job_already_applied %}
+{% block content %}
+  <div class="breadcrumbs overlay">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="breadcrumbs-content">
+            <h1 class="page-title">{{object.title}}</h1>
+            <p>Business plan draws on a wide range of knowledge from different business<br> disciplines.
+              Business draws on a wide range of different business .</p>
+          </div>
+          <ul class="breadcrumb-nav">
+            <li><a href="index.html">Home</a></li>
+            <li>Job Details</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="job-details section">
+    <div class="container">
+      <div class="row mb-n5">
+
+        <div class="col-lg-8 col-12">
+          <div class="job-details-inner">
+            <div class="job-details-head row mx-0">
+              <div class="company-logo col-auto">
+                <a href="#" style="border-radius: 4px; overflow: hidden;">
+                {% if object.logo %}
+                <img src="{{ object.logo.url }}" style="height:70px; width:70px;" alt="Company Logo">
+                {% else %}
+                <img src="{% static 'assets/images/jobs/img7.png' %}" style="height:70px; width:70px;" alt="Company Logo">
+                {% endif %}
+                </a>
+
+              </div>
+              <div class="salary-type col-auto order-sm-3">
+                <span class="salary-range">{{object.salary}}</span>
+                <span class="badge badge-success">{{object.job_type.jobtype}}</span>
+              </div>
+              <div class="content col">
+                <h5 class="title">{{object.title}}</h5>
+                <ul class="meta">
+                  <li><strong class="text-primary"><a href="#">{{object.company}}</a></strong>
+                  </li>
+                  <li><i class="lni lni-map-marker"></i> {{object.job_location.location}}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="job-details-body">
+              <h6 class="mb-3">Job Description</h6>
+              <p>{{ object.job_description|safe}}.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-12">
+          <div class="job-details-sidebar">
+            <div class="sidebar-widget">
+              <div class="inner">
+                <div class="row m-n2 button">
+                  <div class="col-xl-auto col-lg-12 col-sm-auto col-12 p-2">
+                      {% if user.is_authenticated and user.role == 'employee' %}
+                      {% is_job_already_applied object.id request.user as is_applied %}
+                      {% if is_applied %}
+                        <a class="d-block btn btn-alt">Already Applied</a>
+                      {% else %}
+                    <span>
+                      <form action="{% url 'jobportal:apply-job' job.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="job" value="{{ object.id }}">
+                        <input type="submit"  value="Apply Now" />
+                      </form>
+                      </span>
+                      {% endif %}
+                  {% else %}
+                  <a href="{% url 'account:login' %}" class="d-block btn btn-alt">Login to Apply</a>
+                  {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="sidebar-widget">
+              <div class="inner">
+                <h6 class="title">Job Overview</h6>
+                <ul class="job-overview list-unstyled">
+                  <li><strong>Published on:</strong> {{object.created_at}}</li>
+                  <li><strong>Vacancy:</strong> {{object.vacancy}}</li>
+                  <li><strong>Type:</strong> {{object.job_type.jobtype}}</li>
+                  <li><strong>Experience:</strong> {{object.experience}} year(s)</li>
+                  <li><strong>Job Location:</strong> {{object.job_location}}</li>
+                  <li><strong>Salary:</strong>{{object.salary}}</li>
+                  <li><strong>Application Deadline:</strong> {{object.deadline}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

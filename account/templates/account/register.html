@@ -1,0 +1,104 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="breadcrumbs overlay">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="breadcrumbs-content">
+            <h1 class="page-title">Register</h1>
+            <p>
+              Business plan draws on a wide range of knowledge from different
+              business<br />
+              disciplines. Business draws on a wide range of different
+              business .
+            </p>
+          </div>
+          <ul class="breadcrumb-nav">
+            <li><a href="index.html">Home</a></li>
+            <li>Register</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="add-resume section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 offset-lg-1 col-12">
+          <div class="add-resume-inner box">
+            <form class="form-ad" method="POST">
+              <h3 class="single-section-title">Register</h3>
+              <div class="form-group">
+                <div class="row">
+                  {% csrf_token %}
+                  <div class="col-lg-6 col-12">
+                    <div class="form-group">
+                      <label class="control-label">Email</label>
+                      {{form.email}}
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-12">
+                  <div class="form-group">
+                    <label class="control-label">Select Role</label>
+                    {{form.role}}
+                  </div>
+                </div>
+                  <div class="col-lg-6 col-12">
+                    <div class="form-group">
+                      <label class="control-label">Password</label>
+                     {{form.password1}}
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-12">
+                    <div class="form-group">
+                      <label class="control-label">Confirm Password</label>
+                      {{form.password2}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 col-md-5 col-12">
+                  <div class="button">
+                    <input  type="submit" class="btn" value="Register" />
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-7 col-12">
+                  <div class="add-post-btn float-right">
+                    <ul>
+                      <li>
+                        <a href="{% url 'account:login' %}" class="btn-added"><i class="lni lni-add-files"></i> Already Have An Account</a>
+                      </li>
+                      <li>
+                        <a href="#" class="btn-delete"><i class="lni lni-remove-file"></i> Forgot Password</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<script>
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Email..';
+		form_fields[2].placeholder='Enter password...';
+		form_fields[3].placeholder='Re-enter Password...';
+
+		for (var field in form_fields){
+			form_fields[field].className += ' form-control'
+		}
+
+		var form_select = document.getElementsByTagName('select')
+		for (var field in form_select){
+			form_select[field].className += ' form-control'
+		}
+
+	</script>
+{% endblock %}

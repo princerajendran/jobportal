@@ -1,0 +1,16 @@
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{ message }}
+  </div>
+    {% endfor %}
+{% endif %}
+{% if form.errors %}
+    {% for message in messages %}
+    <div class="alert alert-danger alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{form.errors}}
+  </div>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,73 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="breadcrumbs overlay">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="breadcrumbs-content">
+            <h1 class="page-title">Login</h1>
+            <p>
+              Business plan draws on a wide range of knowledge from different
+              business<br />
+              disciplines. Business draws on a wide range of different
+              business .
+            </p>
+          </div>
+          <ul class="breadcrumb-nav">
+            <li><a href="index.html">Home</a></li>
+            <li>Login</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="add-resume section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 offset-lg-1 col-12">
+          <div class="add-resume-inner box">
+            <form class="form-ad" method="post">
+              <h3 class="single-section-title">Login</h3>
+              <div class="form-group">
+                <div class="row">
+                  {% csrf_token %}
+                  <div class="col-md-6">
+                    <label class="control-label">Email</label>
+                    <input class="form-control" name="email" placeholder="Enter your email" type="email" />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="control-label">Password</label>
+                    <input class="form-control" name="password" placeholder="Enter your password" type="password" />
+                  </div>
+                </div>
+              </div>
+              <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 col-md-5 col-12">
+                  <div class="button">
+                    <input  type="submit" class="btn" value="Login" />
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-7 col-12">
+                  <div class="add-post-btn float-right">
+                    <ul>
+                      <li>
+                        <a href="{% url 'account:register' %}" class="btn-added"><i class="lni lni-add-files"></i> Create New Account</a>
+                      </li>
+                      <li>
+                        <a href="#" class="btn-delete"><i class="lni lni-remove-file"></i> Forgot Password</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

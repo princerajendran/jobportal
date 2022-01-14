@@ -1,0 +1,107 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% load is_job_already_applied %}
+{% block content %}
+<section class="find-job section">
+    <div class="search-job">
+      <div class="container">
+        <div class="search-nner">
+          <form  method="GET" action="{% url 'jobportal:search_result' %}">
+          <div class="row">
+            <div class="col-lg-5 col-md-5 col-xs-12">
+              <input type="text" name = "keyword" class="form-control" placeholder="Keyword: Name, Category" />
+            </div>
+            <div class="col-lg-5 col-md-5 col-xs-12">
+              <input type="text" name = "location" class="form-control" placeholder="Location" />
+            </div>
+            <div class="col-lg-2 col-md-2 col-xs-12 button">
+              <button type="submit" class="btn btn-common float-right">
+                Filter
+              </button>
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="single-head">
+        <div class="row">
+          <div class="col-12">
+            {% for job in jobs %}
+            <div class="single-job">
+              <div class="job-image">
+                {% if job.logo %}
+                <img src="{{ job.logo.url }}" style="height:50px; width:50px;" alt="#" />
+                {% else %}
+                <img src="{% static 'assets/images/jobs/img7.png' %}" style="height:50px; width:50px;" alt="#" />
+                {% endif %}
+              </div>
+              <div class="job-content">
+                <h4><a href="{% url 'jobportal:jobdetails' job.id %}">{{ job.title }}</a></h4>
+                <p>
+                  {{ job.job_description|slice:":255"|safe}}
+                </p>
+                <ul>
+                  <li>
+                    <i class="lni lni-website"></i><a href="#"> {{ job.website }}</a>
+                  </li>
+                  <li><i class="lni lni-dollar"></i> {{ job.salary }}</li>
+                  <li><i class="lni lni-map-marker"></i> {{ job.job_location }}</li>
+                </ul>
+              </div>
+              <div class="job-button">
+                <ul>
+
+                  {% if user.is_authenticated and user.role == 'employee' %}
+                    {% is_job_already_applied job request.user as is_applied %}
+                      {% if is_applied %}
+                        <li><a>Already Applied</a></li>
+                      {% else %}
+                    <span>
+                      <form action="{% url 'jobportal:apply-job' job.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="job" value="{{ job.id }}">
+                        <input type="submit"  value="Apply Now" />
+                      </form>
+                      </span>
+                      {% endif %}
+                  {% else %}
+                  <li><a href="{% url 'account:login' %}">Login to Apply</a></li>
+                  {% endif %}
+                  <li><span>{{ job.job_type }}</span></li>
+                </ul>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="pagination center">
+              <ul class="pagination-list">
+                <li>
+                  {% if jobs.has_previous %}
+                    <a href="{% url 'jobportal:joblist' jobs.previous_page_number %}"><i class="lni lni-arrow-left"></i></a>
+                  {% endif %}
+                </li>
+                {% for i in jobs.paginator.page_range %}
+                  {% if jobs.number == i %}
+                    <li class='active'><span>{{ i }}</span></li>
+                    {% else %}
+                    <li><a href='{% url "jobportal:joblist" i %}'>{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                <li>
+                {% if jobs.has_next %}
+                  <a href="{% url 'jobportal:joblist' jobs.next_page_number %}"><i class="lni lni-arrow-right"></i></a>
+                {% endif %}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
